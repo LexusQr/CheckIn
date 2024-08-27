@@ -73,6 +73,24 @@
             background-color: #333333;
         }
 
+        .checkbox-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-group label {
+            flex: 1;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-left: 10px;
+            margin-right: 20px;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 20px;
@@ -93,11 +111,17 @@
 <body>
     <div class="container">
         <h1>Добро пожаловать!</h1>
-        <p id="guest-name"></p>
-        <label>
-            <input type="checkbox" id="friend-checkbox">
-            Друг
-        </label>
+        <div id="guest-info" class="checkbox-group">
+            <p id="guest-name"></p>
+            <label>
+                Гость
+                <input type="checkbox" id="guest-checkbox">
+            </label>
+            <label>
+                Друг
+                <input type="checkbox" id="friend-checkbox">
+            </label>
+        </div>
         <button id="submit-btn">Отправить</button>
     </div>
 
@@ -218,15 +242,18 @@
             }
 
             document.getElementById('submit-btn').addEventListener('click', function() {
-                const isFriend = document.getElementById('friend-checkbox').checked;
-
-                const data = {
-                    id: guestID,
-                    guestName: guest['ИО гостя'],
+                const isGuest = document.getElementById('guest-checkbox').checked ? 'Yes' : 'No';
+                const isFriend = document.getElementById('friend-checkbox').checked ? 'Yes' : 'No';
+                
+                // Sample data structure for submission
+                const submissionData = {
+                    guestID: guestID,
+                    guestName: guest ? guest["ИО гостя"] : '',
+                    isGuest: isGuest,
                     isFriend: isFriend
                 };
-
-                fetch('https://script.google.com/macros/s/AKfycbyUkqFNAFdyY6gjYC4Jx1gHreGl5nbyUg-yusibRx4jyk5hfABEpJjtpOnfDVmBaSRh/exec', { // Замените на URL вашего веб-приложения из Google Apps Script
+                
+                fetch('https://script.google.com/macros/s/AKfycbxpC_BsbOiGml1KL9sk1c51qMhfP9R-jYRNhQCdiiXSP2q4sgXELGlh6sqXcH5OKypk/exec', { // Замените на URL вашего веб-приложения из Google Apps Script
                     method: 'POST',
                     body: JSON.stringify(data)
                 })
